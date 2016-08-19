@@ -13,6 +13,7 @@ export default class TodoBox extends React.Component {
 }
 
 class TodoList extends React.Component {
+
 	render() {
 		return (
 			<div className="todoList">
@@ -28,17 +29,41 @@ class TodoList extends React.Component {
 			</div>
 		)
 	}
+
 }
 
 class Todo extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			checked: false
+		};
+
+		this.handleChange = function() {
+			this.setState(function(prev, curr) {
+				return {
+					checked: !prev.state.checked
+				}
+			});
+		};
+
+	};
+
+
+
 	render() {
 		return (
 			<tr>
+				<td style={{border: "1px solid black"}}>
+					<input type="checkbox" checked={this.state.checked} onChange={this.handleChange.bind(this)}></input>
+				</td>
 				<td style={{border: "1px solid black"}}>{this.props.title}</td>
 				<td style={{border: "1px solid black"}}>{this.props.children}</td>
 			</tr>
 		)
 	}
+
 }
 Todo.propTypes = {
 	title: React.PropTypes.number.isRequired
