@@ -13,15 +13,48 @@ export default class TodoBox extends React.Component {
 }
 
 class TodoList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			data: this.props.data,
+			titleValue: "",
+			detailValue: ""
+		};
+		this.changeTitle = this.changeTitle.bind(this);
+		this.changeDetail = this.changeDetail.bind(this);
+		this.addTodo = this.addTodo.bind(this);
+	}
+
+	changeTitle (e) {
+		this.setState({titleValue: e.target.value});
+	}
+
+	changeDetail (e) {
+		this.setState({detailValue: e.target.value});
+	}
+
+	addTodo () {
+		this.setState(function(prev, curr) {
+			curr.data.push({
+				title: prev.titleValue,
+				detail: prev.detailValue
+			})
+		})
+	}
 
 	render() {
 
-		var todo = this.props.data.map(function (obj) {
+		let todo = this.props.data.map(function (obj) {
 			return <Todo title={obj.title} key={obj.title}>{obj.detail}</Todo>
 		})
 
 		return (
 			<div className="todoList">
+				<div>
+					Title: <input type="text" value={this.state.titleValue} onChange={this.changeTitle} />
+					Detail: <input type="text" value={this.state.detailValue} onChange={this.changeDetail} />
+					<button onClick={this.addTodo}>Add</button>
+				</div>
 				<table style={style.table}>
 					<tbody>
 						{todo}
@@ -43,7 +76,6 @@ class Todo extends React.Component {
 
 		this.handleChange = function() {
 			this.setState(function(prev, curr) {
-				console.log(prev)
 				return {
 					checked: !prev.checked
 				}
