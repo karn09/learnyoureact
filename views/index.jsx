@@ -56,7 +56,7 @@ class Todo extends React.Component {
 
 	render() {
 		return (
-			<tr>
+			<tr style={this.state.checked ? style.checkedTodo : style.notCheckedTodo }>
 				<td style={{border: "1px solid black"}}>
 					<input type="checkbox" checked={this.state.checked} onChange={this.handleChange.bind(this)}></input>
 				</td>
@@ -87,5 +87,11 @@ let style = {
 	},
 	table: {
 		border:"2px solid black"
+	},
+	checkedTodo: {
+		textDecoration: "line-through"
+	},
+	notCheckedTodo: {
+		textDecoration: "none"
 	}
 }
