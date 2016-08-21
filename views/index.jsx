@@ -23,6 +23,7 @@ class TodoList extends React.Component {
 		this.changeTitle = this.changeTitle.bind(this);
 		this.changeDetail = this.changeDetail.bind(this);
 		this.addTodo = this.addTodo.bind(this);
+		this.deleteTodo = this.deleteTodo.bind(this)
 	}
 
 	changeTitle (e) {
@@ -34,19 +35,35 @@ class TodoList extends React.Component {
 	}
 
 	addTodo () {
-		this.setState(function(prev, curr) {
-			curr.data.push({
-				title: prev.titleValue,
-				detail: prev.detailValue
-			})
+		let newData = this.state.data;
+
+		newData.push({
+			title: this.state.titleValue,
+			detail: this.state.detailValue
+		});
+
+		this.setState({
+			data: newData,
+			titleValue: '',
+			detailValue: ''
+		});
+
+	}
+
+	deleteTodo (title) {
+		let newData = this.state.data.filter(function(todo) {
+			return todo.title !== title;
+		})
+		this.setState({
+			data: newData
 		})
 	}
 
 	render() {
 
-		let todo = this.props.data.map(function (obj) {
-			return <Todo title={obj.title} key={obj.title}>{obj.detail}</Todo>
-		})
+		let todo = this.state.data.map(function (obj) {
+			return <Todo title={obj.title} key={obj.title} onDelete={this.deleteTodo}>{obj.detail}</Todo>
+		}.bind(this))
 
 		return (
 			<div className="todoList">
@@ -80,9 +97,16 @@ class Todo extends React.Component {
 
 	};
 
-	handleChange(e) {
-		this.setState({checked: !this.state.checked})
+handleChange(e) {
+	this.setState({
+		checked: !this.state.checked
+	});
+	if (e.target.checked) {
+		this.setState({TodoStyle: style.checkedTodo});
+	} else {
+		this.setState({TodoStyle: style.notCheckedTodo});
 	}
+}
 
 	_onDelete() {
 		this.props.onDelete(this.props.title)
