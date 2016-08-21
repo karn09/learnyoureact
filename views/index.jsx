@@ -43,8 +43,9 @@ class Todo extends React.Component {
 
 		this.handleChange = function() {
 			this.setState(function(prev, curr) {
+				console.log(prev)
 				return {
-					checked: !prev.state.checked
+					checked: !prev.checked
 				}
 			});
 		};
@@ -67,7 +68,7 @@ class Todo extends React.Component {
 
 }
 Todo.propTypes = {
-	title: React.PropTypes.number.isRequired
+	title: React.PropTypes.string.isRequired
 }
 
 class TodoForm extends React.Component {
