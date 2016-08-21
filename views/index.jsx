@@ -71,26 +71,29 @@ class Todo extends React.Component {
 		super(props)
 
 		this.state = {
-			checked: false
+			checked: false,
+			TodoStyle: style.notCheckedTodo
 		};
 
-		this.handleChange = function() {
-			this.setState(function(prev, curr) {
-				return {
-					checked: !prev.checked
-				}
-			});
-		};
+		this.handleChange = this.handleChange.bind(this);
+		this._onDelete = this._onDelete.bind(this)
 
 	};
 
+	handleChange(e) {
+		this.setState({checked: !this.state.checked})
+	}
 
+	_onDelete() {
+		this.props.onDelete(this.props.title)
+	}
 
 	render() {
 		return (
-			<tr style={this.state.checked ? style.checkedTodo : style.notCheckedTodo }>
-				<td style={{border: "1px solid black"}}>
-					<input type="checkbox" checked={this.state.checked} onChange={this.handleChange.bind(this)}></input>
+			<tr style={this.state.TodoStyle}>
+				<td style={style.tableContent}><button onClick={this._onDelete}>X</button></td>
+				<td style={style.tableContent}>
+					<input type="checkbox" checked={this.state.checked} onChange={this.handleChange} />
 				</td>
 				<td style={style.tableContent}>{this.props.title}</td>
 				<td style={style.tableContent}>{this.props.children}</td>
@@ -99,6 +102,7 @@ class Todo extends React.Component {
 	}
 
 }
+
 Todo.propTypes = {
 	title: React.PropTypes.string.isRequired
 }
